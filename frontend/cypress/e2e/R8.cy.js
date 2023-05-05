@@ -6,6 +6,7 @@ describe('R8', () => {
   let title // title of a task
   let url // url of a task
   const description = 'Description test'
+  let todos
 
   before(function () {
     // create a fabricated user from a fixture
@@ -37,6 +38,7 @@ describe('R8', () => {
         }).then((response) => {
           title = response.body[0].title
           url = task.url
+          todos = task.todos
           cy.log("RESPONSE BODY", response.body[0]);
         })
       })
@@ -73,6 +75,10 @@ describe('R8', () => {
     cy.get('.popup-inner')
       cy.get('h1')
       .should('contain.text', title)
+
+    // assert that the user has one todo
+    cy.get('.todo-list')
+      .should('contain.text', todos)
   })
 
 
@@ -107,6 +113,37 @@ describe('R8', () => {
     cy.get('.todo-list li:nth-last-child(2)')
       .should('contain.text', description)
   })
+
+
+  it('R8UC2 click an active todo checker', () => {
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('.checker')
+      .should('have.class', 'unchecked')
+      .click()
+  })
+
+  it('R8UC2 click a done todo checker', () => {
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('.checker')
+      .should('have.class', 'checked')
+
+    cy.get('.todo-list li:nth-last-child(2)')
+        .find('span.editable')
+        .should('have.css', 'text-decoration', 'line-through solid rgb(49, 46, 46)')
+
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('.checker')
+      .click()
+
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('.checker')
+      .should('have.class', 'unchecked')
+
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('span.editable')
+      .should('have.css', 'text-decoration', 'none solid rgb(49, 46, 46)')
+  })
+
 
 
   after(function () {
