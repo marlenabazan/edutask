@@ -96,7 +96,6 @@ describe('R8', () => {
 
   it('R8UC1 enter description and create new todo item', () => {
     cy.get('.popup-inner')
-      // cy.get('form')
         .find('input[type="text"]')
         .type(description)
         .should('have.value', description)
@@ -104,9 +103,6 @@ describe('R8', () => {
     cy.get('.popup-inner')
       .find('input[type="submit"]')
       .click()
-
-    cy.get('.todo-list li:nth-last-child(2)')
-      .should('contain.text', description)
   })
 
   it('R8UC1 append new todo item to the list', () => {
@@ -144,6 +140,15 @@ describe('R8', () => {
       .should('have.css', 'text-decoration', 'none solid rgb(49, 46, 46)')
   })
 
+
+  it('R8UC3 click the x symbol to delete a todo', () => {
+    cy.get('.todo-list li:nth-last-child(2)')
+      .find('.remover')
+      .click()
+
+    cy.contains('.todo-list li', description)
+      .should('not.exist')
+  })
 
 
   after(function () {
