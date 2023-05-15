@@ -2,19 +2,15 @@ name: Pytest
 
 on:
   push:
-    branches: ["master"]
+    branches: [ "master" ]
   pull_request:
-    branches: ["master"]
+    branches: [ "master" ]
   workflow_dispatch:
-
-defaults:
-  run:
-    working-directory: ./backend
-
+    
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v3
 
@@ -26,8 +22,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-            python -m pip install --upgrade pip
-            pip install -r requirements.pip
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.pip
+
       - name: Unit tests
         run: |
           python -m pytest -m unit
