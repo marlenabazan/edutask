@@ -7,10 +7,6 @@ on:
     branches: ["master"]
   workflow_dispatch:
 
-defaults:
-  run:
-    working-directory: backend
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
             python -m pip install --upgrade pip
-            pip install -r requirements.txt
+            pip install -r backend/requirements.txt
 
       - name: Unit tests
         run: |
